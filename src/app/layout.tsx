@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dev-Link",
+  title: "Dev-Linked",
   description: "Developers Social Community Site Where Developers Show OFF.",
 };
 
