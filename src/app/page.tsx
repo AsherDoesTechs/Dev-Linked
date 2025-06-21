@@ -66,7 +66,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="mt-20 text-center text-sm text-neutral-500 space-x-4">
-        <a href="#">Github Repo</a>
+        <a href="#">GitHub Repo</a>
         <a href="#">About</a>
         <a href="#">Terms</a>
         <a href="#">Twitter</a>
