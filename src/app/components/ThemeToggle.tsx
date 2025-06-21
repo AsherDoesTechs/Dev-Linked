@@ -11,5 +11,20 @@ export default function ThemeToggle() {
     document.documentElement.classList.toggle("dark", stored);
   }, []);
 
-  const toggleTheme = () => {};
+  const toggleTheme = () => {
+    const newTheme = !dark;
+    setDark(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme);
+    localStorage.setItem("theme", newTheme ? "dark" : "light");
+  };
+
+  return (
+    <button
+      onClick={toggleTheme}
+      className="text-xl p-2 rounded-full cursor-pointer hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors duration-300 ease-in-out"
+      aria-label="Toggle Theme"
+    >
+      {dark ? "🌙" : "☀️"}
+    </button>
+  );
 }
