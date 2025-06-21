@@ -13,7 +13,7 @@ export default function HomePage() {
           Dev–Linked is a social hub for developers to share progress, post
           updates, and grow.
         </p>
-        <button className="bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-neutral-200 transition">
+        <button className="bg-white text-black px-6 py-3 rounded-lg font-medium cursor-pointer hover hover:bg-neutral-200 transition">
           Sign in with GitHub
         </button>
       </section>
@@ -54,6 +54,14 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="mt-24 text-center">
+        <h2 className="text-3xl font-bold">Join the Dev Network</h2>
+        <p className="text-neutral-400 mt-2">Built by devs, for devs.</p>
+        <button className="mt-6 bg-white text-black px-6 py-3 rounded-lg font-semibold cursor-pointer hover hover:bg-neutral-200 transition">
+          Join Now
+        </button>
       </section>
     </main>
   );
