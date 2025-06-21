@@ -32,6 +32,11 @@ export default function HomePage() {
           </div>
         ))}
       </section>
+
+      {/* Preview Feed */}
+      <section className="mt-20 max-w-4xl mx-auto">
+        <h2 className="text-2xl font-semibold mb-6">Preview Feed</h2>
+      </section>
     </main>
   );
 }
