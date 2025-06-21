@@ -1,33 +1,73 @@
+// src/app/components/FeatureTabs.tsx
 "use client";
-
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Github, Newspaper, MonitorPlay, Users } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  Github,
+  LogIn,
+  Newspaper,
+  MessageSquareText,
+  MonitorPlay,
+  FolderGit2,
+  Users2,
+  UserPlus,
+} from "lucide-react";
 
 const allFeatures = [
+  // 🔐 Auth
   {
     title: "GitHub Auth",
+    desc: "Login seamlessly using your GitHub account.",
     category: "Auth",
     icon: <Github className="w-6 h-6 text-emerald-500" />,
-    desc: "Secure login using your GitHub account.",
   },
   {
-    title: "Dev Feed",
+    title: "Secure Route Protection",
+    desc: "Guard sensitive routes with Auth0 middleware.",
+    category: "Auth",
+    icon: <LogIn className="w-6 h-6 text-emerald-500" />,
+  },
+
+  // 📰 Feed
+  {
+    title: "Post Dev Logs",
+    desc: "Share progress updates and status like mini-tweets.",
     category: "Feed",
     icon: <Newspaper className="w-6 h-6 text-emerald-500" />,
-    desc: "Browse developer logs, updates, and projects.",
   },
+  {
+    title: "Like and Comment",
+    desc: "Engage with other devs’ updates and discussions.",
+    category: "Feed",
+    icon: <MessageSquareText className="w-6 h-6 text-emerald-500" />,
+  },
+
+  // 💼 Showcase
   {
     title: "Showcase Projects",
+    desc: "Highlight and link your best work directly from GitHub.",
     category: "Showcase",
     icon: <MonitorPlay className="w-6 h-6 text-emerald-500" />,
-    desc: "Display your GitHub work and portfolio.",
   },
   {
-    title: "Dev Connections",
+    title: "GitHub Integration",
+    desc: "Display GitHub stats and pinned repositories.",
+    category: "Showcase",
+    icon: <FolderGit2 className="w-6 h-6 text-emerald-500" />,
+  },
+
+  // 👥 Social
+  {
+    title: "Follow Developers",
+    desc: "Build your dev circle by following like-minded peers.",
     category: "Social",
-    icon: <Users className="w-6 h-6 text-emerald-500" />,
-    desc: "Connect with other developers and grow your network.",
+    icon: <Users2 className="w-6 h-6 text-emerald-500" />,
+  },
+  {
+    title: "Collaborate & Connect",
+    desc: "Comment, like, and collaborate with fellow devs.",
+    category: "Social",
+    icon: <UserPlus className="w-6 h-6 text-emerald-500" />,
   },
 ];
 
@@ -42,54 +82,53 @@ export default function FeatureTabs() {
       : allFeatures.filter((f) => f.category === activeTab);
 
   return (
-    <section className="py-12 bg-white dark:bg-neutral-950 transition-colors duration-300">
-      <div className="max-w-6xl mx-auto px-4 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white">
-          Explore <span className="text-emerald-500">Dev–Linked</span> Features
-        </h2>
-
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mt-6 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveTab(cat)}
-              className={`cursor-pointer px-4 py-1.5 rounded-full border text-sm font-medium transition duration-200 ${
+    <section className="mt-20 text-center">
+      <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white mb-4">
+        Explore <span className="text-emerald-500">Dev–Linked</span> Features
+      </h2>
+      {/* Category Tabs */}
+      <div className="flex justify-center gap-4 flex-wrap mb-10">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setActiveTab(cat)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition cursor-pointer
+              ${
                 activeTab === cat
-                  ? "bg-emerald-500 text-white border-emerald-500 shadow-md"
-                  : "bg-transparent text-neutral-600 dark:text-neutral-400 border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                  ? "bg-emerald-500 text-white"
+                  : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
               }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Feature Cards */}
-        <motion.div layout className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <AnimatePresence mode="wait">
-            {filtered.map((f) => (
-              <motion.div
-                key={f.title}
-                layout
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="group bg-white/10 backdrop-blur-md border border-white/10 dark:border-white/5 rounded-xl p-4 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
-              >
-                <div className="mb-2">{f.icon}</div>
-                <h3 className="text-base font-semibold text-white mb-1">
-                  {f.title}
-                </h3>
-                <p className="text-neutral-300 text-sm leading-snug">
-                  {f.desc}
-                </p>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+          >
+            {cat}
+          </button>
+        ))}
       </div>
+
+      {/* Feature Cards */}
+      <motion.div
+        layout
+        className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center px-4"
+      >
+        <AnimatePresence mode="wait">
+          {filtered.map((f) => (
+            <motion.div
+              key={f.title}
+              layout
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="group bg-white/10 backdrop-blur-md border border-white/10 dark:border-white/5 rounded-xl p-4 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+            >
+              <div className="mb-2">{f.icon}</div>
+              <h3 className="text-base font-semibold text-white mb-1">
+                {f.title}
+              </h3>
+              <p className="text-neutral-300 text-sm leading-snug">{f.desc}</p>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
     </section>
   );
 }
