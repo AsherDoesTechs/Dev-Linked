@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 import { motion } from "framer-motion";
 import FeatureTabs from "@/app/components/FeatureTabs";
 import Link from "next/link";

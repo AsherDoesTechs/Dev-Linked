@@ -1,8 +1,9 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/styles/globals.css";
 import ThemeToggle from "@/app/components/ThemeToggle";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -24,13 +25,11 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased bg-white text-black dark:bg-neutral-950 dark:text-white transition-colors duration-300`}
       >
-        <UserProvider>
-          <div className="fixed top-4 right-4 z-50">
-            <ThemeToggle />
-          </div>
+        <div className="fixed top-4 right-4 z-50">
+          <ThemeToggle />
+        </div>
 
-          {children}
-        </UserProvider>
+        {children}
       </body>
     </html>
   );
