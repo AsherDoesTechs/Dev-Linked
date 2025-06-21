@@ -1,13 +1,41 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { getSession, UserProfile } from "@auth0/nextjs-auth0/client";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import FeatureTabs from "@/app/components/FeatureTabs";
+import Link from "next/link";
 
 export default function HomePage() {
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    const fetchSession = async () => {
+      const session = await getSession();
+      if (session?.user) {
+        setUser(session.user);
+      }
+    };
+
+    fetchSession();
+  }, []);
+
+  if (!user) {
+    return (
+      <div className="text-white p-10">
+        You must be logged in to view this page.
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-neutral-950 text-white px-6 py-16 font-sans">
       {/* Hero Section */}
+      <div className="p-10 text-white">
+        <h1>Welcome, {user.name} 👋</h1>
+      </div>
+
       <section className="text-center max-w-2xl mx-auto space-y-6 mb-20">
         <motion.h1
           className="text-4xl md:text-5xl font-bold leading-tight"
@@ -19,22 +47,14 @@ export default function HomePage() {
           Share Code. Build Together.
         </motion.h1>
 
-        <motion.p
-          className="text-neutral-400 text-lg"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-        >
-          Dev–Linked is a social hub for developers to share progress, post
-          updates, and grow.
-        </motion.p>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          className="bg-white text-black px-6 py-3 rounded-lg font-medium cursor-pointer hover transition hover:bg-neutral-200"
-        >
-          Sign in with GitHub
-        </motion.button>
+        <Link href="/api/auth/login">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            className="bg-white text-black px-6 py-3 rounded-lg font-medium cursor-pointer hover transition hover:bg-neutral-200"
+          >
+            Sign in with GitHub
+          </motion.button>
+        </Link>
       </section>
 
       {/* Feature Tabs */}
@@ -91,9 +111,11 @@ export default function HomePage() {
       <section className="mt-32 text-center">
         <h2 className="text-3xl font-bold">Join the Dev Network</h2>
         <p className="text-neutral-400 mt-2">Built by devs, for devs.</p>
-        <button className="mt-6 bg-white text-black px-6 py-3 rounded-lg font-semibold cursor-pointer hover transition hover:bg-neutral-200">
-          Join Now
-        </button>
+        <Link href="/api/auth/login">
+          <button className="mt-6 bg-white text-black px-6 py-3 rounded-lg font-semibold cursor-pointer hover transition hover:bg-neutral-200">
+            Join Now
+          </button>
+        </Link>
       </section>
 
       {/* Footer */}
