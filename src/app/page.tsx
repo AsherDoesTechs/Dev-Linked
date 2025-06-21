@@ -17,6 +17,21 @@ export default function HomePage() {
           Sign in with GitHub
         </button>
       </section>
+
+      {/* Features */}
+      <section className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto text-left">
+        {[
+          { title: "Post Developer Logs (DevLogs)", icon: "📝" },
+          { title: "Follow & Connect with Other Devs", icon: "🔗" },
+          { title: "Showcase Your GitHub Projects", icon: "📁" },
+          { title: "Like, Comment, and Collaborate", icon: "💬" },
+        ].map(({ title, icon }) => (
+          <div key={title} className="flex items-center space-x-4">
+            <div className="text-3xl">{icon}</div>
+            <p className="text-lg">{title}</p>
+          </div>
+        ))}
+      </section>
     </main>
   );
 }
