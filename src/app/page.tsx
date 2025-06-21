@@ -36,6 +36,24 @@ export default function HomePage() {
       {/* Preview Feed */}
       <section className="mt-20 max-w-4xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6">Preview Feed</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          {[1, 2].map((_, i) => (
+            <div
+              key={i}
+              className="bg-neutral-900 p-6 rounded-xl space-y-3 shadow-lg"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-neutral-700" />
+                <div className="flex-1 h-3 bg-neutral-700 rounded w-1/3" />
+              </div>
+              <div className="h-3 bg-neutral-700 rounded w-full" />
+              <div className="h-3 bg-neutral-700 rounded w-3/4" />
+              <div className="flex space-x-4 text-neutral-600 text-xl">
+                <span>❤️</span> <span>💬</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   );
