@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
+categories:hover{
+cursor: pointer;
+}
 
 :root {
   --background: #ffffff;
