@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./styles/globals.css";
+import { Inter } from "next/font/google";
+import "@/app/styles/globals.css";
 import ThemeToggle from "@/app/components/ThemeToggle";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Dev-Linked",
@@ -29,13 +22,15 @@ export default function RootLayout({
         <link rel="icon" href="/img/Logo.png" type="image/png" sizes="32x32" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-neutral-950 dark:text-white transition-colors duration-300`}
+        className={`${inter.variable} antialiased bg-white text-black dark:bg-neutral-950 dark:text-white transition-colors duration-300`}
       >
-        <div className="fixed top-4 right-4 z-50">
-          <ThemeToggle />
-        </div>
+        <UserProvider>
+          <div className="fixed top-4 right-4 z-50">
+            <ThemeToggle />
+          </div>
 
-        {children}
+          {children}
+        </UserProvider>
       </body>
     </html>
   );
