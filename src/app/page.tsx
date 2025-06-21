@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import FeatureTabs from "@/app/components/FeatureTabs";
 
 export default function HomePage() {
   return (
@@ -19,6 +20,8 @@ export default function HomePage() {
         </button>
       </section>
 
+      {/* ... maybe Hero here ... */}
+      <FeatureTabs />
       {/* Features */}
       <section className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto text-left">
         {[

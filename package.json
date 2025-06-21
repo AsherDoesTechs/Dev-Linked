@@ -10,10 +10,14 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.6.1",
+    "framer-motion": "^12.18.1",
+    "lucide-react": "^0.519.0",
     "mongoose": "^8.16.0",
     "next": "15.3.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "three": "^0.177.0",
+    "vanta": "^0.5.24"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -21,6 +25,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.177.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.3.4",

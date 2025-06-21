@@ -31,7 +31,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black dark:bg-neutral-950 dark:text-white transition-colors duration-300`}
       >
-        {/* Toggle Theme Button */}
         <div className="fixed top-4 right-4 z-50">
           <ThemeToggle />
         </div>
