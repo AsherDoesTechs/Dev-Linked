@@ -1,9 +1,8 @@
-// src/app/layout.tsx
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/styles/globals.css";
+import { ThemeProvider } from "next-themes";
 import ThemeToggle from "@/app/components/ThemeToggle";
-import { useUser } from "@auth0/nextjs-auth0";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -18,18 +17,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         <link rel="icon" href="/img/Logo.png" type="image/png" sizes="32x32" />
       </head>
-      <body
-        className={`${inter.variable} antialiased bg-white text-black dark:bg-neutral-950 dark:text-white transition-colors duration-300`}
-      >
-        <div className="fixed top-4 right-4 z-50">
-          <ThemeToggle />
-        </div>
-
-        {children}
+      <body className="antialiased transition-colors duration-300">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <div className="fixed top-4 right-4 z-50">
+            <ThemeToggle />
+          </div>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

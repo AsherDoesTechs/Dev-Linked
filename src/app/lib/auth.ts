@@ -1,6 +1,14 @@
-// import { getSession } from '@auth0/nextjs-auth0';
+'use server';
 
-// export const getUserSession = async (req: any, res: any) => {
-//   const session = await getSession(req, res);
-//   return session?.user;
-// };
+import { getSession } from '@/auth';
+import { redirect } from 'next/navigation';
+
+export async function requireAuth() {
+  const session = await getSession();
+
+  if (!session?.user) {
+    redirect('/api/auth/login');
+  }
+
+  return session.user;
+}
