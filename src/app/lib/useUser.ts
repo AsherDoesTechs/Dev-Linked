@@ -1,5 +1,4 @@
-import { useUser } from '@auth0/nextjs-auth0/client';
-
+import useSWR from 'swr';
 
 const userFetcher = async () => {
   const res = await fetch('/api/auth/me', {
@@ -8,6 +7,16 @@ const userFetcher = async () => {
   });
   if (!res.ok) throw new Error('Not authenticated');
   return res.json();
+};
+
+const useUser = () => {
+  const { data, error, isLoading } = useSWR('/api/auth/me', userFetcher);
+
+  return {
+    user: data,
+    isLoading,
+    error,
+  };
 };
 
 export default useUser;

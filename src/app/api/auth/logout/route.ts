@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function GET() {
   const returnTo = `${process.env.AUTH0_BASE_URL}/`;
@@ -8,5 +8,12 @@ export async function GET() {
       returnTo,
     });
 
-  return NextResponse.redirect(logoutUrl);
+  const response = NextResponse.redirect(logoutUrl);
+
+  response.cookies.set("appSession", "", {
+    path: "/",
+    expires: new Date(0),
+  });
+
+  return response;
 }
