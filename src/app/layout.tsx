@@ -4,6 +4,7 @@ import "@/app/styles/globals.css";
 import { ThemeProvider } from "next-themes";
 import ThemeToggle from "@/app/components/ThemeToggle";
 
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
