@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^4.7.0",
+    "dotenv": "^16.5.0",
     "framer-motion": "^12.18.1",
     "lucide-react": "^0.519.0",
     "mongoose": "^8.16.0",

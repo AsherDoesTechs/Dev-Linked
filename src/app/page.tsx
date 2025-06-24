@@ -3,9 +3,10 @@
 import { motion } from "framer-motion";
 import FeatureTabs from "@/app/components/FeatureTabs";
 import Link from "next/link";
+import { useUser } from "@auth0/nextjs-auth0";
 
 export default function HomePage() {
-  const user = null; // replace with real auth check later
+  const { user, error, isLoading } = useUser();
 
   return (
     <main className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-white px-6 py-16 font-sans transition-colors duration-300">
@@ -30,12 +31,33 @@ export default function HomePage() {
           updates, and grow.
         </motion.p>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-medium cursor-pointer hover:opacity-90 transition"
-        >
-          Sign in with GitHub
-        </motion.button>
+        {isLoading ? (
+          <motion.p className="text-neutral-500">Loading...</motion.p>
+        ) : user ? (
+          <motion.div
+            className="space-y-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            <p className="text-lg">Welcome back, {user.name || "Developer"}!</p>
+            <a
+              href="/api/auth/logout"
+              className="inline-block bg-red-600 text-white dark:bg-red-500 dark:text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition"
+            >
+              Logout
+            </a>
+          </motion.div>
+        ) : (
+          <a href="/api/auth/login" className="inline-block">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-medium cursor-pointer hover:opacity-90 transition"
+            >
+              Sign in with GitHub
+            </motion.button>
+          </a>
+        )}
       </section>
 
       <FeatureTabs />
@@ -90,9 +112,13 @@ export default function HomePage() {
         <p className="text-neutral-600 dark:text-neutral-400 mt-2">
           Built by devs, for devs.
         </p>
-        <button className="mt-6 bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-semibold cursor-pointer hover:opacity-90 transition">
-          Sign in
-        </button>
+        {!user && (
+          <a href="/api/auth/login">
+            <button className="mt-6 bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-semibold cursor-pointer hover:opacity-90 transition">
+              Sign in
+            </button>
+          </a>
+        )}
       </section>
 
       <footer className="mt-24 text-center text-sm text-neutral-600 dark:text-neutral-500 space-x-6">
