@@ -1,27 +1,42 @@
-import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
-import { exchangeCodeForToken } from '@/app/lib/auth0'; // custom util (see below)
+import { NextRequest, NextResponse } from 'next/server';
+import jwt from 'jsonwebtoken';
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const code = searchParams.get('code');
+  const code = req.nextUrl.searchParams.get('code');
 
   if (!code) {
-    return NextResponse.json({ error: 'Missing code' }, { status: 400 });
+    return NextResponse.redirect(`${process.env.AUTH0_BASE_URL}/?error=missing_code`);
   }
 
-  const tokenRes = await exchangeCodeForToken(code);
+  const tokenRes = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      grant_type: 'authorization_code',
+      client_id: process.env.AUTH0_CLIENT_ID,
+      client_secret: process.env.AUTH0_CLIENT_SECRET,
+      code,
+      redirect_uri: `${process.env.AUTH0_BASE_URL}/api/auth/callback`,
+    }),
+  });
 
-  if (!tokenRes?.id_token) {
-    return NextResponse.json({ error: 'Invalid token response' }, { status: 401 });
+  const tokenData = await tokenRes.json();
+
+  if (!tokenRes.ok) {
+    console.error("Failed to exchange token:", tokenData);
+    return NextResponse.redirect(`${process.env.AUTH0_BASE_URL}/?error=token_exchange_failed`);
   }
 
-  const response = NextResponse.redirect(new URL('/', req.url));
-  response.cookies.set('appSession', tokenRes.id_token, {
+  const id_token = tokenData.id_token;
+
+  const response = NextResponse.redirect(`${process.env.AUTH0_BASE_URL}/`);
+  response.cookies.set({
+    name: 'appSession',
+    value: id_token,
     httpOnly: true,
+    path: '/',
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    path: '/',
   });
 
   return response;

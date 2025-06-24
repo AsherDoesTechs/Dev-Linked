@@ -3,26 +3,23 @@ import jwt from "jsonwebtoken";
 
 export async function GET() {
   try {
-    const cookieStore = await cookies(); // ✅ correct, no await
+    const cookieStore = await cookies();
+    const token = cookieStore.get("appSession")?.value;
 
-    // ✅ Use cookie name that Auth0 sets by default
-    const idToken = cookieStore.get("id_token")?.value || cookieStore.get("appSession")?.value;
-
-    if (!idToken) {
+    if (!token) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    const decoded = jwt.decode(idToken);
-
+    const decoded = jwt.decode(token);
     return new Response(JSON.stringify(decoded), {
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
-    console.error("Error decoding token:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+  } catch (err) {
+    console.error("Error in /me:", err);
+    return new Response(JSON.stringify({ error: "Server Error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
