@@ -1,3 +1,3 @@
-import { handleCallback } from '@auth0/nextjs-auth0';
+import { handleCallBack } from '@auth0/nextjs-auth0/edge';
 
-export const GET = handleCallback();
+export const GET = handleCallBack();
