@@ -1,12 +1,20 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import FeatureTabs from "@/app/components/FeatureTabs";
-import Link from "next/link";
 import useUser from "@/app/lib/useUser";
 
 export default function HomePage() {
   const { user, error, isLoading } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && user) {
+      router.push("/dashboard");
+    }
+  }, [user, isLoading, router]);
 
   return (
     <main className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-white px-6 py-16 font-sans transition-colors duration-300">

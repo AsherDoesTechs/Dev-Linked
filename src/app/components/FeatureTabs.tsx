@@ -1,4 +1,3 @@
-// src/app/components/FeatureTabs.tsx
 "use client";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -14,7 +13,6 @@ import {
 } from "lucide-react";
 
 const allFeatures = [
-  // 🔐 Auth
   {
     title: "GitHub Auth",
     desc: "Login seamlessly using your GitHub account.",
@@ -28,7 +26,6 @@ const allFeatures = [
     icon: <LogIn className="w-6 h-6 text-emerald-500" />,
   },
 
-  // 📰 Feed
   {
     title: "Post Dev Logs",
     desc: "Share progress updates and status like mini-tweets.",
@@ -42,7 +39,6 @@ const allFeatures = [
     icon: <MessageSquareText className="w-6 h-6 text-emerald-500" />,
   },
 
-  // 💼 Showcase
   {
     title: "Showcase Projects",
     desc: "Highlight and link your best work directly from GitHub.",
@@ -56,7 +52,6 @@ const allFeatures = [
     icon: <FolderGit2 className="w-6 h-6 text-emerald-500" />,
   },
 
-  // 👥 Social
   {
     title: "Follow Developers",
     desc: "Build your dev circle by following like-minded peers.",
