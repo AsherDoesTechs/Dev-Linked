@@ -1,6 +1,6 @@
 "use client";
-
-import { useState } from "react";
+import Link from "next/link";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import NavBar from "@/app/components/Navbar";
 import PostCard from "@/app/components/PostCard";
@@ -8,43 +8,48 @@ import Sidebar from "@/app/components/Sidebar";
 import useUser from "@/app/lib/useUser";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
+import { v4 as uuid } from "uuid";
 
 export default function DashboardPage() {
   const { user } = useUser();
-  const [newPost, setNewPost] = useState("");
-  const [tagInput, setTagInput] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [showMyPostsOnly, setShowMyPostsOnly] = useState(false);
 
+  const [newPost, setNewPost] = useState("");
   const [posts, setPosts] = useState([
     {
       id: "1",
       username: "asherdev",
+      avatarUrl: "https://avatars.githubusercontent.com/u/114223650?v=4",
       content: "Just implemented GitHub Auth with Auth0 in Next.js! 🚀",
-      tags: ["nextjs", "auth"],
-      timestamp: "2 hours ago",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hrs ago
       likes: 7,
+      tags: ["nextjs", "auth0"],
     },
     {
       id: "2",
       username: "silentgrinder",
+      avatarUrl: "https://avatars.githubusercontent.com/u/114223650?v=4",
       content: "Designing the dashboard layout before diving into MongoDB. 🔧",
-      tags: ["design", "planning"],
-      timestamp: "5 hours ago",
+      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), // 5 hrs ago
       likes: 5,
+      tags: ["dashboard", "mongodb"],
     },
   ]);
+
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [filterTag, setFilterTag] = useState<string | null>(null);
 
   const handlePost = () => {
     if (!newPost.trim()) return;
     setPosts([
       {
-        id: Date.now().toString(),
+        id: uuid(),
         username: user?.username || "you",
+        avatarUrl: user?.picture || "/placeholder-avatar.png",
         content: newPost,
-        tags,
-        timestamp: "Just now",
+        timestamp: new Date().toISOString(),
         likes: 0,
+        tags,
       },
       ...posts,
     ]);
@@ -53,9 +58,12 @@ export default function DashboardPage() {
     setTagInput("");
   };
 
-  const filteredPosts = showMyPostsOnly
-    ? posts.filter((p) => p.username === (user?.username || "you"))
-    : posts;
+  const filteredPosts = useMemo(() => {
+    if (!filterTag) return posts;
+    return posts.filter((post) => post.tags?.includes(filterTag));
+  }, [posts, filterTag]);
+
+  const suggestedTags = ["nextjs", "devlog", "typescript", "mongodb", "auth0"];
 
   return (
     <main className="min-h-screen bg-white dark:bg-neutral-950 text-black dark:text-white font-sans transition-colors duration-300">
@@ -65,7 +73,7 @@ export default function DashboardPage() {
         {/* Sidebar */}
         <Sidebar />
 
-        {/* Main Feed */}
+        {/* Feed Area */}
         <div className="flex-1 max-w-3xl">
           <motion.h1
             className="text-4xl font-bold mb-10 leading-tight"
@@ -76,7 +84,7 @@ export default function DashboardPage() {
             🧠 Your Dev Feed
           </motion.h1>
 
-          {/* User Profile */}
+          {/* User Profile (Top) */}
           {user && (
             <motion.div
               className="bg-neutral-100 dark:bg-neutral-900 p-6 rounded-xl shadow mb-10 flex items-center gap-4"
@@ -84,11 +92,13 @@ export default function DashboardPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <div className="w-16 h-16 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+              <img
+                src={user.picture}
+                alt={user.name}
+                className="w-16 h-16 rounded-full object-cover"
+              />
               <div>
-                <h2 className="text-xl font-bold">
-                  {user.name || "Developer"}
-                </h2>
+                <h2 className="text-xl font-bold">{user.name}</h2>
                 <p className="text-neutral-600 dark:text-neutral-400 text-sm">
                   @{user.username || "you"} • DevLog Explorer
                 </p>
@@ -106,7 +116,7 @@ export default function DashboardPage() {
             <textarea
               value={newPost}
               onChange={(e) => setNewPost(e.target.value)}
-              placeholder="Write your DevLog with Markdown! (Use ```ts or ```js for code)"
+              placeholder="Write your DevLog with Markdown! (```js for code blocks)"
               rows={6}
               className="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
             />
@@ -126,14 +136,35 @@ export default function DashboardPage() {
                     setTagInput("");
                   }
                 }}
-                placeholder="Add tags like nextjs or devlog (press Enter)"
+                placeholder="Add tags (e.g. nextjs, mongodb)..."
                 className="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <div className="flex flex-wrap mt-2 gap-2">
+              {/* Autocomplete Suggestions */}
+              {tagInput && (
+                <div className="mt-2 flex flex-wrap gap-2 text-sm">
+                  {suggestedTags
+                    .filter((t) => t.includes(tagInput.toLowerCase()))
+                    .map((tag) => (
+                      <button
+                        key={tag}
+                        onClick={() => {
+                          if (!tags.includes(tag)) {
+                            setTags([...tags, tag]);
+                          }
+                          setTagInput("");
+                        }}
+                        className="bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-white px-2 py-1 rounded-full"
+                      >
+                        #{tag}
+                      </button>
+                    ))}
+                </div>
+              )}
+              <div className="flex flex-wrap gap-2 mt-3">
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded-full text-xs"
+                    className="bg-blue-200 dark:bg-blue-900 text-blue-900 dark:text-blue-100 px-3 py-1 text-xs rounded-full"
                   >
                     #{tag}
                   </span>
@@ -141,6 +172,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
+            {/* Post Button */}
             <div className="text-right mt-3">
               <button
                 onClick={handlePost}
@@ -150,7 +182,7 @@ export default function DashboardPage() {
               </button>
             </div>
 
-            {/* Markdown Preview */}
+            {/* Live Markdown Preview */}
             {newPost.trim() && (
               <div className="mt-6 border-t pt-4">
                 <p className="text-sm font-semibold mb-2 text-neutral-500">
@@ -165,18 +197,21 @@ export default function DashboardPage() {
             )}
           </motion.div>
 
-          {/* Filter Toggle */}
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">DevLogs</h2>
-            <button
-              onClick={() => setShowMyPostsOnly(!showMyPostsOnly)}
-              className="text-sm bg-neutral-200 dark:bg-neutral-800 px-4 py-2 rounded-lg hover:opacity-80 transition"
-            >
-              {showMyPostsOnly ? "Show All Posts" : "Show My Posts"}
-            </button>
-          </div>
+          {/* Feed Filter Indicator */}
+          {filterTag && (
+            <div className="mb-4 text-sm text-blue-600">
+              Showing posts with tag:{" "}
+              <span className="font-semibold">#{filterTag}</span>{" "}
+              <button
+                onClick={() => setFilterTag(null)}
+                className="ml-2 text-red-500 hover:underline"
+              >
+                Clear
+              </button>
+            </div>
+          )}
 
-          {/* Feed */}
+          {/* Posts Feed */}
           <motion.div
             className="space-y-6"
             initial={{ opacity: 0 }}
@@ -185,16 +220,14 @@ export default function DashboardPage() {
           >
             {filteredPosts.length > 0 ? (
               filteredPosts.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <PostCard key={post.id} post={post} onTagClick={setFilterTag} />
               ))
             ) : (
               <div className="text-center py-16">
                 <p className="text-neutral-500 text-lg mb-4">
-                  No posts yet. Follow some devs or write your first DevLog!
+                  No posts found. Try clearing the filter or creating a new
+                  post.
                 </p>
-                <button className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition">
-                  Explore Devs
-                </button>
               </div>
             )}
           </motion.div>

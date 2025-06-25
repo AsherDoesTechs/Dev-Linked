@@ -5,17 +5,20 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import FeatureTabs from "@/app/components/FeatureTabs";
 import useUser from "@/app/lib/useUser";
+import Spinner from "@/app/components/Spinner";
 
 export default function HomePage() {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!isLoading && user) {
-      router.push("/dashboard");
-    }
-  }, [user, isLoading, router]);
+  if (isLoading) {
+    return <Spinner />;
+  }
 
+  if (user) {
+    router.push("/dashboard");
+    return null;
+  }
   return (
     <main className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-white px-6 py-16 font-sans transition-colors duration-300">
       <section className="text-center max-w-2xl mx-auto space-y-6 mb-20">
@@ -39,33 +42,14 @@ export default function HomePage() {
           updates, and grow.
         </motion.p>
 
-        {isLoading ? (
-          <motion.p className="text-neutral-500">Loading...</motion.p>
-        ) : user ? (
-          <motion.div
-            className="space-y-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
+        <a href="/api/auth/login" className="inline-block">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-medium cursor-pointer hover:opacity-90 transition"
           >
-            <p className="text-lg">Welcome back, {user.name || "Developer"}!</p>
-            <a
-              href="/api/auth/logout"
-              className="inline-block bg-red-600 text-white dark:bg-red-500 dark:text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition"
-            >
-              Logout
-            </a>
-          </motion.div>
-        ) : (
-          <a href="/api/auth/login" className="inline-block">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-medium cursor-pointer hover:opacity-90 transition"
-            >
-              Sign in with GitHub
-            </motion.button>
-          </a>
-        )}
+            Sign in with GitHub
+          </motion.button>
+        </a>
       </section>
 
       <FeatureTabs />

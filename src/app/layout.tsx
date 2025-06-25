@@ -4,7 +4,6 @@ import "@/app/styles/globals.css";
 import { ThemeProvider } from "next-themes";
 import ThemeToggle from "@/app/components/ThemeToggle";
 
-
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
@@ -20,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/img/Logo.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/logo/Logo.png" type="image/png" sizes="32x32" />
       </head>
       <body className="antialiased transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
