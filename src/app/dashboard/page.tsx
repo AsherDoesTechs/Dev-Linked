@@ -6,6 +6,8 @@ import NavBar from "@/app/components/Navbar";
 import PostCard from "@/app/components/PostCard";
 import Sidebar from "@/app/components/Sidebar";
 import useUser from "@/app/lib/useUser";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
 
 export default function DashboardPage() {
   const { user } = useUser(); // ✅ get user from hook
@@ -92,9 +94,9 @@ export default function DashboardPage() {
             <textarea
               value={newPost}
               onChange={(e) => setNewPost(e.target.value)}
-              placeholder="What's on your mind, dev?"
-              rows={4}
-              className="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Write your DevLog with Markdown! (Use ```js for code blocks)"
+              rows={6}
+              className="w-full bg-transparent border border-neutral-300 dark:border-neutral-700 rounded-lg p-3 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
             />
             <div className="text-right mt-3">
               <button
@@ -104,6 +106,20 @@ export default function DashboardPage() {
                 Post DevLog
               </button>
             </div>
+
+            {/* Live Markdown Preview */}
+            {newPost.trim() && (
+              <div className="mt-6 border-t pt-4">
+                <p className="text-sm font-semibold mb-2 text-neutral-500">
+                  Preview:
+                </p>
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                    {newPost}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            )}
           </motion.div>
 
           {/* Feed */}
