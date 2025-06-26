@@ -11,14 +11,17 @@ export default function HomePage() {
   const { user, error, isLoading } = useUser();
   const router = useRouter();
 
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
+
+  // ✅ Safe conditional rendering
   if (isLoading) {
     return <Spinner />;
   }
 
-  if (user) {
-    router.push("/dashboard");
-    return null;
-  }
   return (
     <main className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-white px-6 py-16 font-sans transition-colors duration-300">
       <section className="text-center max-w-2xl mx-auto space-y-6 mb-20">
