@@ -17,7 +17,6 @@ export default function HomePage() {
     }
   }, [user, router]);
 
-  // ✅ Safe conditional rendering
   if (isLoading) {
     return <Spinner />;
   }
