@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-const NavigationLinks = () => {
+const NavigationsLinks = () => {
   return (
     <nav className="flex flex-wrap justify-center gap-4 mb-10">
       <Link href="/dashboard">
@@ -32,4 +32,4 @@ const NavigationLinks = () => {
   );
 };
 
-export default NavigationLinks;
+export default NavigationsLinks;
