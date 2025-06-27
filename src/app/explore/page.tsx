@@ -1,6 +1,6 @@
 "use client";
 
-import NavigationLinks from "@/app/components/NavigationsLinks";
+import NavigationsLinks from "@/app/components/NavigationsLinks";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { fetchDevlogs } from "@/app/lib/fetchDevLogs";
@@ -112,7 +112,7 @@ export default function ExplorePage() {
         </p>
       </section>
 
-      <NavigationLinks />
+      <NavigationsLinks />
       {/* DevLog Search */}
       {activeFilter !== "Projects" && (
         <>
