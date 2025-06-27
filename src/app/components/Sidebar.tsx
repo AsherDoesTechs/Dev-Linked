@@ -25,7 +25,7 @@ export default function Sidebar() {
             </li>
             <li>
               <a
-                href="/profile/you"
+                href="/profile"
                 className="hover:text-black dark:hover:text-white"
               >
                 👤 My Profile
