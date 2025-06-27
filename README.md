@@ -62,4 +62,4 @@ A categorized breakdown of core features and current development progress for th
 
 ---
 
-_Updated by PulseMaster & PixelKnight ✨_
+_Updated by AsherDoesTechs ✨_
