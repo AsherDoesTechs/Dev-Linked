@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import NavigationsLinks from "@/app/components/NavigationsLinks";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("DevLogs");
@@ -11,6 +12,7 @@ export default function ProfilePage() {
 
   return (
     <main className="min-h-screen px-6 py-16 bg-white dark:bg-neutral-950 text-black dark:text-white transition-colors duration-300">
+      <NavigationsLinks />
       {/* Profile Header */}
       <section className="text-center mb-10">
         <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-neutral-300 dark:bg-neutral-700" />
