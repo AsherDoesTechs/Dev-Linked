@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 DevLinked Feature Progress Overview
 
-## Getting Started
+A categorized breakdown of core features and current development progress for the DevLinked platform.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✅ Authentication
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Feature                                   | Status  |
+| ----------------------------------------- | ------- |
+| Sign up / login with GitHub (via Auth0)   | ✅ Done |
+| Protect routes (e.g. /dashboard)          | ✅ Done |
+| Store user info in MongoDB on first login | ✅ Done |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📝 DevLogs (User Posts)
 
-## Learn More
+| Feature                              | Status         |
+| ------------------------------------ | -------------- |
+| Create, edit, delete DevLogs         | 🔄 In Progress |
+| Markdown support for code formatting | 🔲 Pending     |
+| Display post timestamp and likes     | ✅ Done        |
+| Character limit (280–500 chars)      | ✅ Done        |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 👥 Social Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Feature                  | Status         |
+| ------------------------ | -------------- |
+| Follow / unfollow users  | 🔲 Pending     |
+| Feed from followed users | 🔲 Pending     |
+| Like & comment system    | 🔄 In Progress |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 👤 Developer Profile Page
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Feature                                | Status  |
+| -------------------------------------- | ------- |
+| Display bio, username, profile picture | ✅ Done |
+| Show recent posts                      | ✅ Done |
+| GitHub repositories via GitHub API     | ✅ Done |
+
+---
+
+## 🔎 Explore & Search
+
+| Feature                  | Status     |
+| ------------------------ | ---------- |
+| Browse users             | 🔲 Pending |
+| Search by username / tag | ✅ Done    |
+
+---
+
+## 🧭 Summary
+
+- ✅ Done: 9 features
+- 🔄 In Progress: 2 features
+- 🔲 Pending: 4 features
+
+---
+
+_Updated by PulseMaster & PixelKnight ✨_
