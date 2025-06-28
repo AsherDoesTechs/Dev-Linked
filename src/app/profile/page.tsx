@@ -8,10 +8,41 @@ import TabNavigation from "@/app/components/TabNavigation";
 import AnalyticsDashboard from "@/app/components/AnalyticsDashboard";
 import ProfileEditModal from "@/app/components/ProfileEditModal";
 import FollowerCard from "@/app/components/FollowerCard";
+import UserList from "@/app/components/UserList";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("DevLogs");
   const [isEditing, setIsEditing] = useState(false);
+
+  const followers = [
+    {
+      id: 1,
+      name: "JaneDoe",
+      username: "janedoe",
+      avatarUrl: "https://i.pravatar.cc/150?u=janedoe",
+      isFollowing: false,
+      isMutual: true,
+    },
+    {
+      id: 2,
+      name: "JohnSmith",
+      username: "johnsmith",
+      avatarUrl: "https://i.pravatar.cc/150?u=johnsmith",
+      isFollowing: true,
+      isMutual: false,
+    },
+  ];
+
+  const following = [
+    {
+      id: 3,
+      name: "DevGuy",
+      username: "devguy",
+      avatarUrl: "https://i.pravatar.cc/150?u=devguy",
+      isFollowing: true,
+      isMutual: false,
+    },
+  ];
 
   const tabs = [
     "DevLogs",
@@ -130,25 +161,37 @@ export default function ProfilePage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="space-y-4"
             >
-              {isPrivate ? (
-                <div className="text-center text-neutral-500 italic">
-                  This profile is private.
-                </div>
-              ) : (
-                [1, 2, 3].map((id) => (
-                  <FollowerCard
-                    key={id}
-                    name="JaneDoe"
-                    username="janedoe"
-                    avatarUrl="https://i.pravatar.cc/150?u=janedoe"
-                    isMutual={id % 2 === 0}
-                    isFollowing={false}
-                    onFollowToggle={() => console.log("Follow toggled")}
-                  />
-                ))
-              )}
+              <UserList
+                users={[
+                  {
+                    id: 1,
+                    name: "JaneDoe",
+                    username: "janedoe",
+                    avatarUrl: "https://i.pravatar.cc/150?u=janedoe",
+                    isFollowing: false,
+                    isMutual: true,
+                  },
+                  {
+                    id: 2,
+                    name: "JohnSmith",
+                    username: "johnsmith",
+                    avatarUrl: "https://i.pravatar.cc/150?u=johnsmith",
+                    isFollowing: true,
+                    isMutual: false,
+                  },
+                  {
+                    id: 3,
+                    name: "Techie",
+                    username: "techgeek",
+                    avatarUrl: "https://i.pravatar.cc/150?u=techgeek",
+                    isFollowing: false,
+                    isMutual: true,
+                  },
+                ]}
+                isPrivate={isPrivate}
+                onFollowToggle={(id) => console.log("Follow toggled", id)}
+              />
             </motion.div>
           )}
 
@@ -159,25 +202,28 @@ export default function ProfilePage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="space-y-4"
             >
-              {[1, 2].map((user) => (
-                <div
-                  key={user}
-                  className="flex items-center justify-between bg-neutral-100 dark:bg-neutral-900 px-4 py-3 rounded-lg shadow"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-blue-500" />
-                    <div>
-                      <p className="font-medium">DevGuy</p>
-                      <p className="text-sm text-neutral-500">@devguy</p>
-                    </div>
-                  </div>
-                  <button className="px-3 py-1 text-sm rounded-full bg-neutral-300 dark:bg-neutral-800 text-black dark:text-white hover:opacity-80 transition">
-                    Unfollow
-                  </button>
-                </div>
-              ))}
+              <UserList
+                users={[
+                  {
+                    id: 4,
+                    name: "DevGuy",
+                    username: "devguy",
+                    avatarUrl: "https://i.pravatar.cc/150?u=devguy",
+                    isFollowing: true,
+                    isMutual: false,
+                  },
+                  {
+                    id: 5,
+                    name: "CodeWizard",
+                    username: "codewizard",
+                    avatarUrl: "https://i.pravatar.cc/150?u=codewizard",
+                    isFollowing: true,
+                    isMutual: true,
+                  },
+                ]}
+                onFollowToggle={(id) => console.log("Unfollowed", id)}
+              />
             </motion.div>
           )}
 
