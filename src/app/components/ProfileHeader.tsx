@@ -4,7 +4,7 @@ import { FileText, MessageSquare, Heart } from "lucide-react";
 
 export default function ProfileHeader() {
   return (
-    <section className="text-center mb-10">
+    <section className="text-center mb-6">
       <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500" />
       <h1 className="text-2xl font-bold">AsherDoesTechs</h1>
       <p className="text-neutral-600 dark:text-neutral-400">@asher</p>
