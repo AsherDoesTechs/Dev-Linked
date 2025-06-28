@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/app/styles/globals.css";
 import { ThemeProvider } from "next-themes";
-import ThemeToggle from "@/app/components/ThemeToggle";
 import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -24,9 +23,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="fixed top-4 right-4 z-50">
-            <ThemeToggle />
-          </div>
+          <div className="fixed top-4 right-4 z-50"></div>
           <Toaster position="top-center" />
           {children}
         </ThemeProvider>
