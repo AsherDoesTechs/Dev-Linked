@@ -142,6 +142,8 @@ export default function ProfilePage() {
                     key={id}
                     name="JaneDoe"
                     username="janedoe"
+                    avatarUrl="https://i.pravatar.cc/150?u=janedoe"
+                    isMutual={id % 2 === 0}
                     isFollowing={false}
                     onFollowToggle={() => console.log("Follow toggled")}
                   />
