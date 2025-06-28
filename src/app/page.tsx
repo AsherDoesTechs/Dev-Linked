@@ -3,12 +3,13 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import FeatureTabs from "@/app/components/FeatureTabs";
 import useUser from "@/app/lib/useUser";
 import Spinner from "@/app/components/Spinner";
+import FeatureTabs from "@/app/components/FeatureTabs";
+import FeatureSlider from "@/app/components/FeatureSlider";
 
 export default function HomePage() {
-  const { user, error, isLoading } = useUser();
+  const { user, isLoading } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -17,13 +18,12 @@ export default function HomePage() {
     }
   }, [user, router]);
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  if (isLoading) return <Spinner />;
 
   return (
-    <main className="min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-white px-6 py-16 font-sans transition-colors duration-300">
-      <section className="text-center max-w-2xl mx-auto space-y-6 mb-20">
+    <main className="relative min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-white px-6 py-16 font-sans transition-colors duration-300 overflow-hidden">
+      {/* Hero */}
+      <section className="text-center max-w-2xl mx-auto space-y-6 mb-20 relative z-10">
         <motion.h1
           className="text-4xl md:text-5xl font-bold leading-tight"
           initial={{ opacity: 0, y: -20 }}
@@ -56,26 +56,16 @@ export default function HomePage() {
 
       <FeatureTabs />
 
-      <section className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto text-left">
-        {[
-          { title: "Post Developer Logs (DevLogs)", icon: "📝" },
-          { title: "Follow & Connect with Other Devs", icon: "🔗" },
-          { title: "Showcase Your GitHub Projects", icon: "📁" },
-          { title: "Like, Comment, and Collaborate", icon: "💬" },
-        ].map(({ title, icon }, i) => (
-          <motion.div
-            key={title}
-            className="flex items-center space-x-4 p-4 bg-neutral-100 dark:bg-neutral-900 rounded-xl shadow-md"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <div className="text-3xl">{icon}</div>
-            <p className="text-lg">{title}</p>
-          </motion.div>
-        ))}
+      {/* Feature Carousel */}
+      {/* 🚀 Replacing old "What You Can Do" section with modern carousel */}
+      <section className="mt-24 max-w-5xl mx-auto">
+        <h2 className="text-2xl font-semibold mb-6 text-center">
+          What You Can Do
+        </h2>
+        <FeatureSlider />
       </section>
 
+      {/* Preview Feed */}
       <section className="mt-24 max-w-5xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6">Preview Feed</h2>
         <div className="grid md:grid-cols-2 gap-6">
@@ -101,6 +91,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* CTA */}
       <section className="mt-32 text-center">
         <h2 className="text-3xl font-bold">Join the Dev Network</h2>
         <p className="text-neutral-600 dark:text-neutral-400 mt-2">
@@ -115,6 +106,7 @@ export default function HomePage() {
         )}
       </section>
 
+      {/* Footer */}
       <footer className="mt-24 text-center text-sm text-neutral-600 dark:text-neutral-500 space-x-6">
         <a href="#">GitHub Repo</a>
         <a href="#">About</a>
