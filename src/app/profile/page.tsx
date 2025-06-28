@@ -42,7 +42,7 @@ export default function ProfilePage() {
       <div className="mt-4 mb-4 text-center">
         <button
           onClick={() => setIsEditing(true)}
-          className="px-4 py-1.5 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+          className="px-4 py-1.5 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 cursor-pointer hover hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
         >
           Edit Profile
         </button>

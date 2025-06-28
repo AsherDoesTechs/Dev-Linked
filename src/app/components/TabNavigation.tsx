@@ -21,7 +21,7 @@ export default function TabNavigation({
           key={tab}
           onClick={() => setActiveTab(tab)}
           className={clsx(
-            "relative px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap",
+            "relative px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap cursor-pointer hover",
             activeTab === tab
               ? "bg-black text-white dark:bg-white dark:text-black"
               : "bg-neutral-200 text-black dark:bg-neutral-800 dark:text-white"
