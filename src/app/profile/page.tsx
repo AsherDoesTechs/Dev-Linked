@@ -56,12 +56,12 @@ export default function ProfilePage() {
 
   const isPrivate = false;
 
-  const userProfile = {
+  const [userProfile, setUserProfile] = useState({
     name: "AsherDoesTechs",
     username: "asher",
     bio: "Frontend developer passionate about building clean UI, cool tools, and contributing to dev communities. 🌱",
     avatarUrl: "",
-  };
+  });
 
   return (
     <main className="min-h-screen px-6 py-16 bg-white dark:bg-neutral-950 text-black dark:text-white transition-colors duration-300">
@@ -85,6 +85,12 @@ export default function ProfilePage() {
         isOpen={isEditing}
         onClose={() => setIsEditing(false)}
         currentProfile={userProfile}
+        onSave={(updatedProfile) =>
+          setUserProfile({
+            ...updatedProfile,
+            avatarUrl: updatedProfile.avatarUrl ?? "", // 👈 ensure it's always a string
+          })
+        }
       />
 
       {/* Tabs */}

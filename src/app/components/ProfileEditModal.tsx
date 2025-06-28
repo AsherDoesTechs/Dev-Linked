@@ -13,12 +13,19 @@ interface ProfileEditModalProps {
     bio: string;
     avatarUrl?: string;
   };
+  onSave: (updated: {
+    name: string;
+    username: string;
+    bio: string;
+    avatarUrl?: string;
+  }) => void;
 }
 
 export default function ProfileEditModal({
   isOpen,
   onClose,
   currentProfile,
+  onSave,
 }: ProfileEditModalProps) {
   const [name, setName] = useState(currentProfile.name);
   const [username, setUsername] = useState(currentProfile.username);
@@ -39,7 +46,12 @@ export default function ProfileEditModal({
   };
 
   const handleSubmit = () => {
-    console.log("Updated profile:", { name, username, bio, avatarPreview });
+    onSave({
+      name,
+      username,
+      bio,
+      avatarUrl: avatarPreview || "",
+    });
     onClose();
   };
 
