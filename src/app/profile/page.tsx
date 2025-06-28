@@ -7,6 +7,7 @@ import ProfileHeader from "@/app/components/ProfileHeader";
 import TabNavigation from "@/app/components/TabNavigation";
 import AnalyticsDashboard from "@/app/components/AnalyticsDashboard";
 import ProfileEditModal from "@/app/components/ProfileEditModal";
+import FollowerCard from "@/app/components/FollowerCard";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("DevLogs");
@@ -136,22 +137,14 @@ export default function ProfilePage() {
                   This profile is private.
                 </div>
               ) : (
-                [1, 2, 3].map((user) => (
-                  <div
-                    key={user}
-                    className="flex items-center justify-between bg-neutral-100 dark:bg-neutral-900 px-4 py-3 rounded-lg shadow"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-yellow-500" />
-                      <div>
-                        <p className="font-medium">JaneDoe</p>
-                        <p className="text-sm text-neutral-500">@janedoe</p>
-                      </div>
-                    </div>
-                    <button className="px-3 py-1 text-sm rounded-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 transition">
-                      Follow
-                    </button>
-                  </div>
+                [1, 2, 3].map((id) => (
+                  <FollowerCard
+                    key={id}
+                    name="JaneDoe"
+                    username="janedoe"
+                    isFollowing={false}
+                    onFollowToggle={() => console.log("Follow toggled")}
+                  />
                 ))
               )}
             </motion.div>

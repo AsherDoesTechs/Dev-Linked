@@ -1,17 +1,15 @@
-"use client";
-
 interface FollowerCardProps {
   name: string;
   username: string;
   isFollowing: boolean;
-  onClick: () => void;
+  onFollowToggle: () => void;
 }
 
 export default function FollowerCard({
   name,
   username,
-  isFollowing,
-  onClick,
+  isFollowing = false,
+  onFollowToggle,
 }: FollowerCardProps) {
   return (
     <div className="flex items-center justify-between bg-neutral-100 dark:bg-neutral-900 px-4 py-3 rounded-lg shadow">
@@ -23,8 +21,8 @@ export default function FollowerCard({
         </div>
       </div>
       <button
-        onClick={onClick}
-        className={`px-3 py-1 text-sm rounded-full transition ${
+        onClick={onFollowToggle}
+        className={`px-3 py-1 text-sm rounded-full transition cursor-pointer hover ${
           isFollowing
             ? "bg-neutral-300 dark:bg-neutral-800 text-black dark:text-white"
             : "bg-black text-white dark:bg-white dark:text-black"
