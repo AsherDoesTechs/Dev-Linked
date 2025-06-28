@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import toast from "react-hot-toast"; // Make sure this is installed!
 
 interface ProfileEditModalProps {
   isOpen: boolean;
@@ -17,7 +18,7 @@ interface ProfileEditModalProps {
     name: string;
     username: string;
     bio: string;
-    avatarUrl?: string;
+    avatarUrl: string;
   }) => void;
 }
 
@@ -33,6 +34,21 @@ export default function ProfileEditModal({
   const [avatarPreview, setAvatarPreview] = useState(
     currentProfile.avatarUrl || ""
   );
+  const [isSaving, setIsSaving] = useState(false);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isOpen && nameInputRef.current) {
+      nameInputRef.current.focus();
+    }
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [isOpen, onClose]);
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -45,14 +61,28 @@ export default function ProfileEditModal({
     }
   };
 
+  const resetFields = () => {
+    setName(currentProfile.name);
+    setUsername(currentProfile.username);
+    setBio(currentProfile.bio);
+    setAvatarPreview(currentProfile.avatarUrl || "");
+  };
+
+  const isChanged =
+    name !== currentProfile.name ||
+    username !== currentProfile.username ||
+    bio !== currentProfile.bio ||
+    avatarPreview !== (currentProfile.avatarUrl || "");
+
   const handleSubmit = () => {
-    onSave({
-      name,
-      username,
-      bio,
-      avatarUrl: avatarPreview || "",
-    });
-    onClose();
+    if (!isChanged) return;
+    setIsSaving(true);
+    setTimeout(() => {
+      onSave({ name, username, bio, avatarUrl: avatarPreview });
+      toast.success("Profile updated successfully!");
+      setIsSaving(false);
+      onClose();
+    }, 1000);
   };
 
   return (
@@ -107,6 +137,7 @@ export default function ProfileEditModal({
 
               {/* Name */}
               <input
+                ref={nameInputRef}
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -132,13 +163,29 @@ export default function ProfileEditModal({
                 className="px-4 py-2 rounded bg-neutral-100 dark:bg-neutral-800 text-black dark:text-white outline-none resize-none"
               />
 
-              {/* Submit */}
-              <button
-                className="mt-2 w-full py-2 rounded bg-black dark:bg-white text-white dark:text-black font-semibold hover:opacity-90 transition"
-                onClick={handleSubmit}
-              >
-                Save Changes
-              </button>
+              {/* Buttons */}
+              <div className="flex gap-2 mt-2">
+                <button
+                  disabled={!isChanged || isSaving}
+                  className={`flex-1 py-2 rounded font-semibold transition ${
+                    !isChanged || isSaving
+                      ? "bg-neutral-400 dark:bg-neutral-700 text-white cursor-not-allowed"
+                      : "bg-black dark:bg-white text-white dark:text-black hover:opacity-90"
+                  }`}
+                  onClick={handleSubmit}
+                >
+                  {isSaving ? "Saving..." : "Save Changes"}
+                </button>
+
+                <button
+                  type="button"
+                  disabled={!isChanged}
+                  onClick={resetFields}
+                  className="flex-shrink-0 px-3 py-2 rounded bg-neutral-200 dark:bg-neutral-800 text-sm hover:opacity-80 disabled:opacity-50"
+                >
+                  Reset
+                </button>
+              </div>
             </div>
           </motion.div>
         </motion.div>

@@ -1,48 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import NavigationsLinks from "@/app/components/NavigationsLinks";
 import ProfileHeader from "@/app/components/ProfileHeader";
 import TabNavigation from "@/app/components/TabNavigation";
 import AnalyticsDashboard from "@/app/components/AnalyticsDashboard";
 import ProfileEditModal from "@/app/components/ProfileEditModal";
-import FollowerCard from "@/app/components/FollowerCard";
 import UserList from "@/app/components/UserList";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("DevLogs");
   const [isEditing, setIsEditing] = useState(false);
-
-  const followers = [
-    {
-      id: 1,
-      name: "JaneDoe",
-      username: "janedoe",
-      avatarUrl: "https://i.pravatar.cc/150?u=janedoe",
-      isFollowing: false,
-      isMutual: true,
-    },
-    {
-      id: 2,
-      name: "JohnSmith",
-      username: "johnsmith",
-      avatarUrl: "https://i.pravatar.cc/150?u=johnsmith",
-      isFollowing: true,
-      isMutual: false,
-    },
-  ];
-
-  const following = [
-    {
-      id: 3,
-      name: "DevGuy",
-      username: "devguy",
-      avatarUrl: "https://i.pravatar.cc/150?u=devguy",
-      isFollowing: true,
-      isMutual: false,
-    },
-  ];
+  const [showToast, setShowToast] = useState(false);
 
   const tabs = [
     "DevLogs",
@@ -56,19 +26,52 @@ export default function ProfilePage() {
 
   const isPrivate = false;
 
-  const [userProfile, setUserProfile] = useState({
+  interface UserProfile {
+    name: string;
+    username: string;
+    bio: string;
+    avatarUrl: string;
+  }
+
+  const [userProfile, setUserProfile] = useState<UserProfile>({
     name: "AsherDoesTechs",
     username: "asher",
     bio: "Frontend developer passionate about building clean UI, cool tools, and contributing to dev communities. 🌱",
     avatarUrl: "",
   });
 
+  useEffect(() => {
+    const stored = localStorage.getItem("devlinked-profile");
+    if (stored) {
+      try {
+        setUserProfile(JSON.parse(stored));
+      } catch (error) {
+        console.error("Failed to parse saved profile:", error);
+      }
+    }
+  }, []);
+
+  const handleSaveProfile = (updatedProfile: UserProfile) => {
+    setUserProfile(updatedProfile);
+    localStorage.setItem("devlinked-profile", JSON.stringify(updatedProfile));
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
   return (
     <main className="min-h-screen px-6 py-16 bg-white dark:bg-neutral-950 text-black dark:text-white transition-colors duration-300">
       <NavigationsLinks />
 
+      {/* Profile Edit Modal */}
+      <ProfileEditModal
+        isOpen={isEditing}
+        onClose={() => setIsEditing(false)}
+        currentProfile={userProfile}
+        onSave={handleSaveProfile}
+      />
+
       {/* Profile Header */}
-      <ProfileHeader />
+      <ProfileHeader profile={userProfile} onEdit={() => setIsEditing(true)} />
 
       {/* Edit Button */}
       <div className="mt-4 mb-4 text-center">
@@ -87,8 +90,10 @@ export default function ProfilePage() {
         currentProfile={userProfile}
         onSave={(updatedProfile) =>
           setUserProfile({
-            ...updatedProfile,
-            avatarUrl: updatedProfile.avatarUrl ?? "", // 👈 ensure it's always a string
+            name: updatedProfile.name,
+            username: updatedProfile.username,
+            bio: updatedProfile.bio,
+            avatarUrl: updatedProfile.avatarUrl ?? "", // Ensures it's always a string
           })
         }
       />
