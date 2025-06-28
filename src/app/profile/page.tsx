@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import clsx from "clsx";
-import Link from "next/link";
 import NavigationsLinks from "@/app/components/NavigationsLinks";
 import ProfileHeader from "@/app/components/ProfileHeader";
 import TabNavigation from "@/app/components/TabNavigation";
 import AnalyticsDashboard from "@/app/components/AnalyticsDashboard";
+import ProfileEditModal from "@/app/components/ProfileEditModal";
 
 export default function ProfilePage() {
   const [activeTab, setActiveTab] = useState("DevLogs");
+  const [isEditing, setIsEditing] = useState(false);
 
   const tabs = [
     "DevLogs",
@@ -22,7 +22,14 @@ export default function ProfilePage() {
     "Settings",
   ];
 
-  const isPrivate = false; // Toggle for public/private profile view
+  const isPrivate = false;
+
+  const userProfile = {
+    name: "AsherDoesTechs",
+    username: "asher",
+    bio: "Frontend developer passionate about building clean UI, cool tools, and contributing to dev communities. 🌱",
+    avatarUrl: "",
+  };
 
   return (
     <main className="min-h-screen px-6 py-16 bg-white dark:bg-neutral-950 text-black dark:text-white transition-colors duration-300">
@@ -31,6 +38,23 @@ export default function ProfilePage() {
       {/* Profile Header */}
       <ProfileHeader />
 
+      {/* Edit Button */}
+      <div className="mt-4 mb-4 text-center">
+        <button
+          onClick={() => setIsEditing(true)}
+          className="px-4 py-1.5 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+        >
+          Edit Profile
+        </button>
+      </div>
+
+      {/* Modal */}
+      <ProfileEditModal
+        isOpen={isEditing}
+        onClose={() => setIsEditing(false)}
+        currentProfile={userProfile}
+      />
+
       {/* Tabs */}
       <TabNavigation
         tabs={tabs}
@@ -38,7 +62,7 @@ export default function ProfilePage() {
         setActiveTab={setActiveTab}
       />
 
-      {/* Content */}
+      {/* Tab Content */}
       <section className="max-w-4xl mx-auto">
         <AnimatePresence mode="wait">
           {activeTab === "DevLogs" && (
