@@ -15,15 +15,6 @@ interface ProfileHeaderProps {
 export default function ProfileHeader({ profile, onEdit }: ProfileHeaderProps) {
   return (
     <section className="text-center mb-6 relative">
-      {/* Edit Button */}
-      <button
-        onClick={onEdit}
-        className="absolute top-0 right-0 text-sm flex items-center gap-1 px-3 py-1 text-neutral-500 hover:text-black dark:hover:text-white transition"
-      >
-        <Pencil className="w-4 h-4" />
-        Edit
-      </button>
-
       {/* Avatar */}
       {profile.avatarUrl ? (
         <img
