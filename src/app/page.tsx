@@ -7,6 +7,7 @@ import useUser from "@/app/lib/useUser";
 import Spinner from "@/app/components/Spinner";
 import FeatureTabs from "@/app/components/FeatureTabs";
 import FeatureSlider from "@/app/components/FeatureSlider";
+import { Github, Info, ShieldCheck, Twitter } from "lucide-react"; // Icon set
 
 export default function HomePage() {
   const { user, isLoading } = useUser();
@@ -106,12 +107,33 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* Footer */}
-      <footer className="mt-24 text-center text-sm text-neutral-600 dark:text-neutral-500 space-x-6">
-        <a href="#">GitHub Repo</a>
-        <a href="#">About</a>
-        <a href="#">Terms</a>
-        <a href="#">Twitter</a>
+      <footer className="mt-32 border-t border-neutral-200 dark:border-neutral-800 pt-10 pb-6 text-sm text-neutral-500 dark:text-neutral-400">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+          {/* Left: Copyright */}
+          <p className="text-xs">
+            &copy; {new Date().getFullYear()} Dev–Linked. All rights reserved.
+          </p>
+
+          {/* Right: Navigation Links with Icons */}
+          <div className="flex flex-wrap justify-center md:justify-end gap-6 font-medium">
+            {[
+              { label: "GitHub", icon: Github },
+              { label: "About", icon: Info },
+              { label: "Terms", icon: ShieldCheck },
+              { label: "Twitter", icon: Twitter },
+            ].map(({ label, icon: Icon }) => (
+              <span
+                key={label}
+                className="group inline-flex items-center gap-1.5 text-neutral-500 hover:text-black dark:hover:text-white cursor-pointer transition-all relative"
+              >
+                <Icon className="w-4 h-4" />
+                <span className="relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-[1.5px] after:bg-current after:transition-all after:duration-300 group-hover:after:w-full">
+                  {label}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
       </footer>
     </main>
   );
