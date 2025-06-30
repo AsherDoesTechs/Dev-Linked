@@ -7,7 +7,7 @@ import useUser from "@/app/lib/useUser";
 import Spinner from "@/app/components/Spinner";
 import FeatureTabs from "@/app/components/FeatureTabs";
 import FeatureSlider from "@/app/components/FeatureSlider";
-import { Github, Info, ShieldCheck, Twitter } from "lucide-react"; // Icon set
+import { Github, Info, ShieldCheck, Twitter } from "lucide-react";
 
 export default function HomePage() {
   const { user, isLoading } = useUser();
@@ -22,11 +22,16 @@ export default function HomePage() {
   if (isLoading) return <Spinner />;
 
   return (
-    <main className="relative min-h-screen bg-white text-black dark:bg-neutral-950 dark:text-white px-6 py-16 font-sans transition-colors duration-300 overflow-hidden">
-      {/* Hero */}
-      <section className="text-center max-w-2xl mx-auto space-y-6 mb-20 relative z-10">
+    <main className="relative min-h-screen bg-white dark:bg-neutral-950 text-black dark:text-white px-6 py-16 font-sans transition-colors duration-300 overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative isolate overflow-hidden text-center max-w-2xl mx-auto space-y-6 mb-24 z-10">
+        {/* Gradient glow background */}
+        <div className="absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute top-[-20%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] bg-gradient-radial from-indigo-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-[120px] animate-pulse" />
+        </div>
+
         <motion.h1
-          className="text-4xl md:text-5xl font-bold leading-tight"
+          className="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -36,29 +41,34 @@ export default function HomePage() {
         </motion.h1>
 
         <motion.p
-          className="text-neutral-600 dark:text-neutral-400 text-lg"
+          className="text-neutral-600 dark:text-neutral-400 text-lg max-w-lg mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
         >
-          Dev–Linked is a social hub for developers to share progress, post
-          updates, and grow.
+          Dev–Linked is a next-gen space for developers to share logs, grow
+          their presence, and collaborate with the tech world.
         </motion.p>
 
-        <a href="/api/auth/login" className="inline-block">
+        <a href="/api/auth/login">
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-medium cursor-pointer hover:opacity-90 transition"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.96 }}
+            className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition relative overflow-hidden"
           >
-            Sign in with GitHub
+            <span className="z-10 relative">Sign in with GitHub</span>
+            <span className="absolute inset-0 z-0 bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity" />
           </motion.button>
         </a>
       </section>
 
+      {/* Gradient Divider */}
+      <div className="w-full h-1 bg-gradient-to-r from-transparent via-neutral-200 dark:via-neutral-800 to-transparent my-16" />
+
+      {/* Feature Tabs */}
       <FeatureTabs />
 
       {/* Feature Carousel */}
-      {/* 🚀 Replacing old "What You Can Do" section with modern carousel */}
       <section className="mt-24 max-w-5xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6 text-center">
           What You Can Do
@@ -68,7 +78,9 @@ export default function HomePage() {
 
       {/* Preview Feed */}
       <section className="mt-24 max-w-5xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6">Preview Feed</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-center">
+          Preview Feed
+        </h2>
         <div className="grid md:grid-cols-2 gap-6">
           {[1, 2].map((_, i) => (
             <motion.div
@@ -93,28 +105,28 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="mt-32 text-center">
+      <section className="mt-32 text-center relative">
+        <div className="absolute inset-x-0 -top-20 h-60 bg-gradient-to-b from-blue-500/10 via-purple-400/10 to-transparent blur-xl rounded-full opacity-30 pointer-events-none" />
         <h2 className="text-3xl font-bold">Join the Dev Network</h2>
         <p className="text-neutral-600 dark:text-neutral-400 mt-2">
           Built by devs, for devs.
         </p>
         {!user && (
           <a href="/api/auth/login">
-            <button className="mt-6 bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-semibold cursor-pointer hover:opacity-90 transition">
+            <button className="mt-6 bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition">
               Sign in
             </button>
           </a>
         )}
       </section>
 
-      <footer className="mt-32 border-t border-neutral-200 dark:border-neutral-800 pt-10 pb-6 text-sm text-neutral-500 dark:text-neutral-400">
+      {/* Footer */}
+      <footer className="mt-32 border-t border-neutral-200 dark:border-neutral-800 pt-10 pb-6 text-sm text-neutral-500 dark:text-neutral-400 backdrop-blur-sm bg-white/40 dark:bg-black/20">
         <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          {/* Left: Copyright */}
           <p className="text-xs">
             &copy; {new Date().getFullYear()} Dev–Linked. All rights reserved.
           </p>
 
-          {/* Right: Navigation Links with Icons */}
           <div className="flex flex-wrap justify-center md:justify-end gap-6 font-medium">
             {[
               { label: "GitHub", icon: Github },
