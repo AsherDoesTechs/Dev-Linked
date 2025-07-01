@@ -82,22 +82,70 @@ export default function HomePage() {
           Preview Feed
         </h2>
         <div className="grid md:grid-cols-2 gap-6">
-          {[1, 2].map((_, i) => (
+          {[
+            {
+              username: "jakecodes",
+              avatar: "https://i.pravatar.cc/150?img=1",
+              snippet:
+                "Just built a custom React hook for fetching with retries. Super useful for resilient UIs!",
+              hearts: 32,
+              comments: 4,
+            },
+            {
+              username: "devina",
+              avatar: "https://i.pravatar.cc/150?img=5",
+              snippet:
+                "Exploring dark mode with Tailwind and Next.js App Router. Game-changer for theme control.",
+              hearts: 58,
+              comments: 11,
+            },
+            {
+              username: "sora404",
+              avatar: "https://i.pravatar.cc/150?img=12",
+              snippet:
+                "Replaced Redux with Zustand in my dashboard app — global state feels way lighter now.",
+              hearts: 19,
+              comments: 2,
+            },
+            {
+              username: "pixelknight",
+              avatar: "https://i.pravatar.cc/150?img=22",
+              snippet:
+                "Refactored my backend from Express to tRPC and Next API routes. Feeling ✨clean✨!",
+              hearts: 44,
+              comments: 6,
+            },
+          ].map((post, i) => (
             <motion.div
               key={i}
-              className="bg-neutral-100 dark:bg-neutral-900 p-6 rounded-xl space-y-3 shadow-lg"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              className="bg-neutral-100 dark:bg-neutral-900 p-6 rounded-xl shadow-lg space-y-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.1 }}
             >
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                <div className="flex-1 h-3 bg-neutral-300 dark:bg-neutral-700 rounded w-1/3" />
+              <div className="flex items-center gap-3">
+                <img
+                  src={post.avatar}
+                  alt={post.username}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+                <div>
+                  <p className="text-sm font-medium">{post.username}</p>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                    2h ago
+                  </p>
+                </div>
               </div>
-              <div className="h-3 bg-neutral-300 dark:bg-neutral-700 rounded w-full" />
-              <div className="h-3 bg-neutral-300 dark:bg-neutral-700 rounded w-3/4" />
-              <div className="flex space-x-4 text-neutral-400 text-xl">
-                <span>❤️</span> <span>💬</span>
+              <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                {post.snippet}
+              </p>
+              <div className="flex items-center gap-6 text-neutral-500 dark:text-neutral-400 text-sm">
+                <span className="flex items-center gap-1">
+                  ❤️ {post.hearts}
+                </span>
+                <span className="flex items-center gap-1">
+                  💬 {post.comments}
+                </span>
               </div>
             </motion.div>
           ))}
