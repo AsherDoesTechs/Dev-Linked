@@ -22,14 +22,47 @@ export default function HomePage() {
   if (isLoading) return <Spinner />;
 
   return (
-    <main className="relative min-h-screen bg-white dark:bg-neutral-950 text-black dark:text-white px-6 py-16 font-sans transition-colors duration-300 overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative isolate overflow-hidden text-center max-w-2xl mx-auto space-y-6 mb-24 z-10">
-        {/* Gradient glow background */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-[-20%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] bg-gradient-radial from-indigo-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-[120px] animate-pulse" />
-        </div>
+    <main className="relative min-h-screen overflow-hidden text-white font-sans">
+      {/* 🔷 Techy Animated Background */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Soft Gradient Blobs */}
+        <motion.div
+          className="absolute w-[600px] h-[600px] top-[-100px] left-[-150px] bg-indigo-500 rounded-full blur-[200px] opacity-30"
+          animate={{ x: [0, 50, 0], y: [0, 50, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute w-[500px] h-[500px] bottom-[-150px] right-[-100px] bg-purple-500 rounded-full blur-[180px] opacity-20"
+          animate={{ x: [0, -40, 0], y: [0, -40, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
 
+        {/* Animated Grid */}
+        <svg
+          className="absolute inset-0 w-full h-full opacity-[0.05]"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <pattern
+              id="grid"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="white"
+                strokeWidth="0.5"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative text-center max-w-2xl mx-auto space-y-6 px-6 py-24 z-10">
         <motion.h1
           className="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight"
           initial={{ opacity: 0, y: -20 }}
@@ -41,7 +74,7 @@ export default function HomePage() {
         </motion.h1>
 
         <motion.p
-          className="text-neutral-600 dark:text-neutral-400 text-lg max-w-lg mx-auto"
+          className="text-neutral-300 text-lg max-w-lg mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
