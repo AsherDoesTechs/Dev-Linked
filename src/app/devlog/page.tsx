@@ -24,13 +24,30 @@ export default function NewDevLogPage() {
       return;
     }
 
+    if (content.length < 280 || content.length > 500) {
+      setError("Content must be between 280 and 500 characters.");
+      return;
+    }
+
     setSubmitting(true);
     setError("");
 
-    // No backend yet, just simulate
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/devlogs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, content }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Something went wrong.");
+      }
+
       router.push("/dashboard");
-    }, 1200);
+    } catch (err) {
+      setError("Failed to post DevLog. Please try again.");
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -66,13 +83,18 @@ export default function NewDevLogPage() {
         </div>
 
         {!previewMode ? (
-          <textarea
-            placeholder="What's your progress update?"
-            rows={10}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="w-full p-3 rounded-lg border dark:border-neutral-700 dark:bg-neutral-800 bg-neutral-100 resize-y"
-          />
+          <>
+            <textarea
+              placeholder="What's your progress update?"
+              rows={10}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="w-full p-3 rounded-lg border dark:border-neutral-700 dark:bg-neutral-800 bg-neutral-100 resize-y"
+            />
+            <div className="text-right text-sm text-neutral-500">
+              {content.length} / 500 characters
+            </div>
+          </>
         ) : (
           <div className="prose dark:prose-invert bg-neutral-100 dark:bg-neutral-800 p-4 rounded-lg border dark:border-neutral-700">
             <ReactMarkdown>
