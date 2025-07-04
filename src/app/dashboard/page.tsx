@@ -1,4 +1,3 @@
-// DashboardPage.tsx
 "use client";
 
 import Link from "next/link";
@@ -10,21 +9,32 @@ import PostCard from "@/app/components/PostCard";
 import PostComposer from "@/app/components/PostComposer";
 import useUser from "@/app/lib/useUser";
 import { v4 as uuid } from "uuid";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
 
 export default function DashboardPage() {
   const { user } = useUser();
 
   const [posts, setPosts] = useState<any[]>([]);
   const [filterTag, setFilterTag] = useState<string | null>(null);
-  const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState<string | null>(null);
+  const [editingPost, setEditingPost] = useState<any | null>(null);
+  const [editContent, setEditContent] = useState("");
+  const [editPreview, setEditPreview] = useState(false);
 
-  // Load posts from localStorage
+  const filteredPosts = useMemo(() => {
+    if (!filterTag) return posts;
+    return posts.filter((post) => post.tags?.includes(filterTag));
+  }, [posts, filterTag]);
+
+  // Load posts
   useEffect(() => {
     const stored = localStorage.getItem("devlinked-posts");
     if (stored) setPosts(JSON.parse(stored));
   }, []);
 
-  // Save posts to localStorage
+  // Save posts
   useEffect(() => {
     localStorage.setItem("devlinked-posts", JSON.stringify(posts));
   }, [posts]);
@@ -40,20 +50,57 @@ export default function DashboardPage() {
       tags,
     };
     setPosts([newPost, ...posts]);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 2000);
+    setShowToast("DevLog posted!");
+    setTimeout(() => setShowToast(null), 2000);
   };
 
   const handleDeletePost = (id: string) => {
+    const confirmed = confirm("Are you sure you want to delete this DevLog?");
+    if (!confirmed) return;
+
     const updated = posts.filter((p) => p.id !== id);
     setPosts(updated);
-    localStorage.setItem("devlinked-posts", JSON.stringify(updated));
+    setShowToast("DevLog deleted.");
+    setTimeout(() => setShowToast(null), 2000);
   };
 
-  const filteredPosts = useMemo(() => {
-    if (!filterTag) return posts;
-    return posts.filter((post) => post.tags?.includes(filterTag));
-  }, [posts, filterTag]);
+  const handleEditClick = (post: any) => {
+    setEditingPost(post);
+    setEditContent(post.content);
+    setEditPreview(false);
+  };
+
+  const handleUpdatePost = () => {
+    const min = 50;
+    const max = 500;
+
+    if (editContent.length < min) {
+      setShowToast(
+        `You're almost there! Write at least ${
+          min - editContent.length
+        } more characters.`
+      );
+      return;
+    }
+
+    if (editContent.length > max) {
+      setShowToast(
+        `Oops! You've exceeded the limit by ${
+          editContent.length - max
+        } characters. Try trimming it down.`
+      );
+      return;
+    }
+
+    const updated = posts.map((p) =>
+      p.id === editingPost.id ? { ...p, content: editContent } : p
+    );
+    setPosts(updated);
+    setEditingPost(null);
+    setEditContent("");
+    setShowToast("DevLog updated.");
+    setTimeout(() => setShowToast(null), 3000);
+  };
 
   return (
     <main className="min-h-screen bg-white dark:bg-neutral-950 text-black dark:text-white font-sans transition-colors duration-300">
@@ -94,13 +141,7 @@ export default function DashboardPage() {
           )}
 
           <PostComposer
-            onPost={({
-              content,
-              tags,
-            }: {
-              content: string;
-              tags: string[];
-            }) => {
+            onPost={({ content, tags }) => {
               const newDevLog = {
                 id: uuid(),
                 username: user?.username || "you",
@@ -145,6 +186,7 @@ export default function DashboardPage() {
                   post={post}
                   onTagClick={setFilterTag}
                   onDelete={handleDeletePost}
+                  onEdit={() => handleEditClick(post)}
                 />
               ))
             ) : (
@@ -159,11 +201,64 @@ export default function DashboardPage() {
 
           {showToast && (
             <div className="fixed bottom-6 right-6 px-4 py-2 bg-black text-white dark:bg-white dark:text-black rounded-lg shadow-lg text-sm z-50">
-              DevLog posted!
+              {showToast}
             </div>
           )}
         </div>
       </section>
+
+      {editingPost && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-neutral-900 p-6 rounded-lg w-full max-w-2xl shadow space-y-4">
+            <h2 className="text-xl font-bold">✏️ Edit DevLog</h2>
+
+            <button
+              onClick={() => setEditPreview(!editPreview)}
+              className="text-sm text-blue-600 underline"
+            >
+              {editPreview ? "Back to Edit" : "Preview"}
+            </button>
+
+            {!editPreview ? (
+              <>
+                <textarea
+                  rows={8}
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  className="w-full p-3 rounded-lg border dark:border-neutral-700 dark:bg-neutral-800 bg-neutral-100 resize-y"
+                />
+                <div className="text-right text-sm text-neutral-500">
+                  {editContent.length} / 500 characters
+                </div>
+              </>
+            ) : (
+              <div className="prose dark:prose-invert p-4 rounded-lg bg-neutral-100 dark:bg-neutral-800 border dark:border-neutral-700">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeHighlight]}
+                >
+                  {editContent || "*Nothing to preview...*"}
+                </ReactMarkdown>
+              </div>
+            )}
+
+            <div className="flex justify-between">
+              <button
+                onClick={() => setEditingPost(null)}
+                className="px-4 py-2 text-sm bg-neutral-200 dark:bg-neutral-700 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdatePost}
+                className="px-6 py-2 bg-black text-white dark:bg-white dark:text-black rounded-lg font-semibold"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
