@@ -87,7 +87,7 @@ export default function HomePage() {
           <motion.button
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.96 }}
-            className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition relative overflow-hidden"
+            className="bg-black text-white dark:bg-white dark:text-black px-6 py-3 rounded-lg font-semibold cursor-pointer hover hover:opacity-90 transition relative overflow-hidden"
           >
             <span className="z-10 relative">Sign in with GitHub</span>
             <span className="absolute inset-0 z-0 bg-gradient-to-r from-blue-500 via-purple-600 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity" />
