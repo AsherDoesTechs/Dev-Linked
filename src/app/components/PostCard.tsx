@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import { formatDistanceToNow } from "date-fns";
-import { Trash2, Undo2 } from "lucide-react";
+import { Trash2, Undo2, Pencil } from "lucide-react"; // 🆕 Pencil icon for Edit
 import "highlight.js/styles/github-dark.css";
 
 interface PostCardProps {
@@ -20,12 +20,14 @@ interface PostCardProps {
   };
   onTagClick?: (tag: string) => void;
   onDelete?: (postId: string) => void;
+  onEdit: () => void; // ✅ Required prop now
 }
 
 export default function PostCard({
   post,
   onTagClick,
   onDelete,
+  onEdit, // ✅ Destructure it
 }: PostCardProps) {
   const [confirming, setConfirming] = useState(false);
   const [showUndo, setShowUndo] = useState(false);
@@ -52,38 +54,51 @@ export default function PostCard({
 
       {/* Post Content */}
       <div className="flex-1">
-        {/* Top Bar: Timestamp + Delete */}
+        {/* Top Bar: Timestamp + Edit/Delete */}
         <div className="flex justify-between items-start mb-2">
           <span className="text-xs text-neutral-500">
             {formatDistanceToNow(new Date(post.timestamp), { addSuffix: true })}
           </span>
 
-          {onDelete && !confirming && (
+          <div className="flex gap-2 items-center">
+            {/* Edit Button */}
             <button
-              onClick={() => setConfirming(true)}
-              title="Delete post"
-              className="text-red-500 hover:text-red-700 transition"
+              onClick={onEdit}
+              title="Edit post"
+              className="text-blue-500 hover:text-blue-700 transition"
             >
-              <Trash2 className="w-4 h-4" />
+              <Pencil className="w-4 h-4" />
             </button>
-          )}
 
-          {onDelete && confirming && (
-            <div className="flex gap-1">
+            {/* Delete Button */}
+            {!confirming && onDelete && (
               <button
-                onClick={handleDelete}
-                className="bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700"
+                onClick={() => setConfirming(true)}
+                title="Delete post"
+                className="text-red-500 hover:text-red-700 transition"
               >
-                Confirm
+                <Trash2 className="w-4 h-4" />
               </button>
-              <button
-                onClick={() => setConfirming(false)}
-                className="text-xs px-2 py-1 text-neutral-500 hover:text-white"
-              >
-                Cancel
-              </button>
-            </div>
-          )}
+            )}
+
+            {/* Confirm Delete */}
+            {onDelete && confirming && (
+              <div className="flex gap-1">
+                <button
+                  onClick={handleDelete}
+                  className="bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700"
+                >
+                  Confirm
+                </button>
+                <button
+                  onClick={() => setConfirming(false)}
+                  className="text-xs px-2 py-1 text-neutral-500 hover:text-white"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Username */}
