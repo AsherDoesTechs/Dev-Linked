@@ -122,6 +122,7 @@ export default function ExplorePage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search DevLogs..."
+              spellCheck={false}
               className="w-full px-4 py-2 rounded-lg border dark:border-neutral-700 bg-white dark:bg-neutral-900 dark:text-white shadow"
             />
           </section>
